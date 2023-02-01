@@ -9,7 +9,10 @@
         "vuejs",
         "blade",
         "php8",
-        "laravel"
+        "laravel",
+        "ACL",
+        "roles",
+        "permissions"
     ],
     "license": "MIT",
     "autoload": {
