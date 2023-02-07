@@ -35,22 +35,22 @@ class TomatoRolesServiceProvider extends ServiceProvider
         //Publish Views
         $this->publishes([
             __DIR__.'/../resources/views' => resource_path('views/vendor/tomato-roles'),
-        ], 'views');
+        ], 'tomato-roles-views');
 
         //Publish Config
         $this->publishes([
             __DIR__.'/../config/tomato-roles.php' => config_path('tomato-roles.php'),
-        ], 'config');
+        ], 'tomato-roles-config');
 
         //Publish Lang
         $this->publishes([
             __DIR__.'/../resources/lang' => resource_path('lang/vendor/tomato-roles'),
-        ], 'lang');
+        ], 'tomato-roles-lang');
 
         //Publish Migrations
         $this->publishes([
             __DIR__.'/../database/migrations' => database_path('migrations'),
-        ], 'migrations');
+        ], 'tomato-roles-migrations');
 
         //Register generate command
         $this->commands([

@@ -43,7 +43,6 @@ class TomatoRolesInstall extends Command
         $this->callSilent('config:cache');
         $this->artisanCommand(['tomato-components:install']);
         $this->callSilent('optimize:clear');
-        $this->call('vendor:publish', ['--provider' => 'TomatoPHP\TomatoRoles\TomatoRolesServiceProvider']);
         $this->callSilent('migrate');
         $this->yarnCommand(['build']);
         $this->info('🍅 Try to login /admin/login with user admin@admin and password QTS@2022');
