@@ -1,33 +1,16 @@
-<x-splade-modal>
-    <h1 class="text-2xl font-bold mb-4">{{trans('tomato-admin::global.crud.view')}} Role #{{$model->id}}</h1>
-
-    <div class="flex flex-col space-y-4">
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{trans('tomato-roles::global.roles.name')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->name}}
-                  </h3>
-              </div>
-          </div>
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{trans('tomato-roles::global.roles.guard_name')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->guard_name}}
-                  </h3>
-              </div>
-          </div>
-
+<x-tomato-admin-container label="{{trans('tomato-admin::global.crud.view')}} {{trans('tomato-roles::global.roles.single')}} #{{$model->id}}">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <x-tomato-admin-row :label="trans('tomato-roles::global.roles.name')" :value="$model->name" type="string" />
+        <x-tomato-admin-row :label="trans('tomato-roles::global.roles.guard_name')" :value="$model->guard_name" type="string" />
     </div>
-</x-splade-modal>
+    <div class="flex justify-start gap-2 pt-3">
+        <x-tomato-admin-button warning label="{{__('Edit')}}" :href="route('admin.roles.edit', $model->id)"/>
+        <x-tomato-admin-button danger :href="route('admin.roles.destroy', $model->id)"
+                               confirm="{{trans('tomato-admin::global.crud.delete-confirm')}}"
+                               confirm-text="{{trans('tomato-admin::global.crud.delete-confirm-text')}}"
+                               confirm-button="{{trans('tomato-admin::global.crud.delete-confirm-button')}}"
+                               cancel-button="{{trans('tomato-admin::global.crud.delete-confirm-cancel-button')}}"
+                               method="delete"  label="{{__('Delete')}}" />
+        <x-tomato-admin-button secondary :href="route('admin.roles.index')" label="{{__('Cancel')}}"/>
+    </div>
+</x-tomato-admin-container>

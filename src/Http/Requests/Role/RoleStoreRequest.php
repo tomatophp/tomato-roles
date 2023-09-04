@@ -26,7 +26,8 @@ class RoleStoreRequest extends FormRequest
         return [
             'name' => 'required|max:255|string',
             'guard_name' => 'required|max:255|string',
-            'roles' => 'required|array|min:1',
+            'permissions' => 'required|array|min:1',
+            'permissions*' => 'required|string|exists:permissions,name',
         ];
     }
 }

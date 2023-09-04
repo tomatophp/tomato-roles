@@ -3,7 +3,8 @@
 namespace TomatoPHP\TomatoRoles;
 
 use Illuminate\Support\ServiceProvider;
-use TomatoPHP\TomatoPHP\Services\Menu\TomatoMenuRegister;
+use TomatoPHP\TomatoAdmin\Facade\TomatoMenu;
+use TomatoPHP\TomatoAdmin\Services\Contracts\Menu;
 use TomatoPHP\TomatoRoles\Console\TomatoRolesGenerate;
 use TomatoPHP\TomatoRoles\Console\TomatoComponentsInstall;
 use TomatoPHP\TomatoRoles\Console\TomatoRolesInstall;
@@ -20,8 +21,6 @@ class TomatoRolesServiceProvider extends ServiceProvider
         //Register Config file
         $this->mergeConfigFrom(__DIR__.'/../config/tomato-roles.php', 'tomato-roles');
 
-        //Register Menus for Tomato Roles
-        TomatoMenuRegister::registerMenu(ALCMenu::class);
 
         //Register views
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'tomato-roles');
@@ -69,5 +68,19 @@ class TomatoRolesServiceProvider extends ServiceProvider
         //Add Middleware Global to Routes web
         $this->app['router']->aliasMiddleware('tomato-roles', \TomatoPHP\TomatoRoles\Http\Middleware\Can::class);
         $this->app['router']->pushMiddlewareToGroup('web', \TomatoPHP\TomatoRoles\Http\Middleware\Can::class);
+
+
+        TomatoMenu::register([
+            Menu::make()
+                ->group(trans('tomato-roles::global.menu.group'))
+                ->label(trans('tomato-roles::global.menu.users'))
+                ->icon("bx bxs-user")
+                ->route("admin.users.index"),
+            Menu::make()
+                ->group(trans('tomato-roles::global.menu.group'))
+                ->label(trans('tomato-roles::global.menu.roles'))
+                ->icon("bx bxs-lock")
+                ->route("admin.roles.index")
+        ]);
     }
 }

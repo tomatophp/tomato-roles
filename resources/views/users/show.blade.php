@@ -1,47 +1,19 @@
-<x-splade-modal class="font-main">
-    <h1 class="text-2xl font-bold mb-4">{{trans('tomato-admin::global.crud.view')}} {{ trans('tomato-roles::global.users.single') }} #{{$model->id}}</h1>
-
-    <div class="flex flex-col space-y-4">
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{trans('tomato-roles::global.users.name')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->name}}
-                  </h3>
-              </div>
-          </div>
-
-          <div class="flex justify-between">
-              <div>
-                  <h3 class="text-lg font-bold">
-                      {{trans('tomato-roles::global.users.email')}}
-                  </h3>
-              </div>
-              <div>
-                  <h3 class="text-lg">
-                      {{ $model->email}}
-                  </h3>
-              </div>
-          </div>
-
-        <div class="flex justify-between">
-            <div>
-                <h3 class="text-lg font-bold">
-                    {{trans('tomato-roles::global.users.roles')}}
-                </h3>
-            </div>
-            <div>
-                <h3 class="text-lg">
-                    {{ $model->roles->pluck('name')->implode(', ') }}
-                </h3>
-            </div>
-        </div>
-
-
+<x-tomato-admin-container label="{{trans('tomato-admin::global.crud.view')}} {{ trans('tomato-roles::global.users.single') }} #{{$model->id}}">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <x-tomato-admin-row :label="trans('tomato-roles::global.users.name')" :value="$model->name" type="string" />
+        <x-tomato-admin-row :label="trans('tomato-roles::global.users.email')" :value="$model->email" type="email" />
+        <x-tomato-admin-row :label="trans('tomato-roles::global.users.roles')" :value="$model->roles->pluck('name')->implode(', ')" type="string" />
     </div>
-</x-splade-modal>
+    <div class="flex justify-start gap-2 pt-3">
+        <x-tomato-admin-button warning label="{{__('Edit')}}" :href="route('admin.users.edit', $model->id)"/>
+        <x-tomato-admin-button danger :href="route('admin.users.destroy', $model->id)"
+                               confirm="{{trans('tomato-admin::global.crud.delete-confirm')}}"
+                               confirm-text="{{trans('tomato-admin::global.crud.delete-confirm-text')}}"
+                               confirm-button="{{trans('tomato-admin::global.crud.delete-confirm-button')}}"
+                               cancel-button="{{trans('tomato-admin::global.crud.delete-confirm-cancel-button')}}"
+                               method="delete"  label="{{__('Delete')}}" />
+        <x-tomato-admin-button secondary :href="route('admin.users.index')" label="{{__('Cancel')}}"/>
+    </div>
+
+
+</x-tomato-admin-container>

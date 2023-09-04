@@ -12,7 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
-use TomatoPHP\TomatoPHP\Services\Tomato;
+use ProtoneMedia\Splade\Facades\Toast;
+use TomatoPHP\TomatoAdmin\Facade\Tomato;
 use TomatoPHP\TomatoRoles\Http\Requests\Role\RoleStoreRequest;
 use TomatoPHP\TomatoRoles\Http\Requests\Role\RoleUpdateRequest;
 use TomatoPHP\TomatoRoles\Services\TomatoRoles;
@@ -29,6 +30,7 @@ class RoleController extends Controller
     {
         return Tomato::index(
             request: $request,
+            model: Role::class,
             view: 'tomato-roles::roles.index',
             table: \TomatoPHP\TomatoRoles\Tables\RoleTable::class,
         );
@@ -52,8 +54,10 @@ class RoleController extends Controller
      */
     public function create(): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
     {
+        $permissionNames = array_values(Permission::get('name')->map(fn($item)=>$item->name)->toArray());
         return view('tomato-roles::roles.create', [
-            "perm" => $this->getPermGroup()
+            "perm" => $this->getPermGroup(),
+            "permissionNames" => $permissionNames
         ]);
     }
 
@@ -71,13 +75,13 @@ class RoleController extends Controller
         );
 
 
-        foreach($request->get('roles') as $item){
+        foreach($request->get('permissions') as $item){
             Permission::findOrCreate($item);
         }
         //Get Permission By Id from $request->roles
-        $response['record']->syncPermissions(array_values($request->get('roles')));
+        $response->record->syncPermissions(array_values($request->get('permissions')));
 
-        return $response['redirect'];
+        return $response->redirect;
     }
 
     /**
@@ -100,10 +104,17 @@ class RoleController extends Controller
      */
     public function edit(Role $model): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
     {
-        $model->roles = $model->permissions->toArray();
+        $permissions = $model->permissions->map(function($item){
+            return $item->name;
+        })->toArray();
+
+        $model->permissions = $permissions;
+
+        $permissionNames = array_values(Permission::get('name')->map(fn($item)=>$item->name)->toArray());
 
         return view('tomato-roles::roles.edit', [
-            "model" =>$model->toArray(),
+            "model" =>$model,
+            "permissionNames" =>$permissionNames,
             "perm" => $this->getPermGroup()
         ]);
     }
@@ -123,17 +134,17 @@ class RoleController extends Controller
         );
 
         //Get Permission By Id from $request->roles
-        if ($request->get('roles')) {
-            foreach($request->get('roles') as $item){
+        if ($request->get('permissions')) {
+            foreach($request->get('permissions') as $item){
                 Permission::findOrCreate($item);
             }
-            $response['record']->syncPermissions(array_values($request->get('roles')));
+            $response->record->syncPermissions(array_values($request->get('permissions')));
         }
         else {
-            $response['record']->syncPermissions([]);
+            $response->record->syncPermissions([]);
         }
 
-        return $response['redirect'];
+        return $response->redirect;
     }
 
     /**
@@ -142,13 +153,22 @@ class RoleController extends Controller
      */
     public function destroy(Role $model): RedirectResponse
     {
-        $model->syncPermissions([]);
+        if($model->name === 'admin'){
+            Toast::warning(__('You Can not delete admin role'))->autoDismiss(2000);
+            return back();
+        }
+        else {
+            $model->syncPermissions([]);
 
-        return Tomato::destroy(
-            model: $model,
-            message: 'Role deleted successfully',
-            redirect: 'admin.roles.index',
-        );
+            $response = Tomato::destroy(
+                model: $model,
+                message: 'Role deleted successfully',
+                redirect: 'admin.roles.index',
+            );
+
+            return $response->redirect;
+        }
+
     }
 
     /**

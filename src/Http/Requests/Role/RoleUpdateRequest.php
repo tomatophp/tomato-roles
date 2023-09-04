@@ -26,7 +26,7 @@ class RoleUpdateRequest extends FormRequest
         return [
             'name' => 'sometimes|max:255|string',
             'guard_name' => 'sometimes|max:255|string',
-            'roles' => 'sometimes|array|min:1',
+            'permissions' => 'sometimes|array|min:1',
         ];
     }
 }

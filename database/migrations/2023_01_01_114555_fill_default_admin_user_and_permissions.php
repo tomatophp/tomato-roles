@@ -41,7 +41,7 @@ class FillDefaultAdminUserAndPermissions extends Migration
     /**
      * @var string
      */
-    protected $password = 'QTS@2022';
+    protected $password = 'password';
 
     /**
      * FillDefaultAdminUserAndPermissions constructor.
@@ -98,7 +98,7 @@ class FillDefaultAdminUserAndPermissions extends Migration
         //Add new users
         $this->users = [
             [
-                'name' => 'Queen Tech',
+                'name' => 'Tomato PHP',
                 'email' => 'admin@admin.com',
                 'password' => Hash::make($this->password),
                 'remember_token' => null,
