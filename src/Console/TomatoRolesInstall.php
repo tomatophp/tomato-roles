@@ -45,7 +45,7 @@ class TomatoRolesInstall extends Command
         $this->callSilent('optimize:clear');
         $this->callSilent('migrate');
         $this->yarnCommand(['build']);
-        $this->info('🍅 Try to login /admin/login with user admin@admin and password QTS@2022');
+        $this->info('🍅 Try to login /admin/login with user "admin@admin.com" and password "password"');
         $this->info('🍅 Tomato Roles installed successfully.');
     }
 }
