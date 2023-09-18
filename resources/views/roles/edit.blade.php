@@ -20,12 +20,12 @@
                     <span class="ml-2 rtl:mr-2 rtl:ml-0 dark:text-gray-200">{{__('Select All')}}</span>
                 </label>
             </div>
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 gap-4">
                 @foreach($perm as $permissionTable)
                     <div>
                         <div class="flex justifiy-between gap-4">
                             <div class="w-full">
-                                <h3 class="text-md font-bold">{{ucfirst($permissionTable[0]['table'])}}</h3>
+                                <h3 class="text-md font-bold">{{\Illuminate\Support\Str::of($permissionTable[0]['table'])->replace('_', ' ')->ucfirst()}}</h3>
                             </div>
                             <div class="flex justifiy-end">
                                 @php
@@ -58,10 +58,19 @@
 
                         </div>
                         <x-splade-group name="permissions" >
-                            <div class="border p-4 rounded-lg grid grid-cols-2 gap-2 h-60 mt-2">
+                            <div class="border p-4 rounded-lg grid grid-cols-2 gap-2 mt-2 shadow-sm">
                                 @foreach($permissionTable as $permission)
+                                    @php
+                                        $name = \Illuminate\Support\Str::of($permission['name'])
+                                            ->remove('admin.')
+                                            ->remove($permission['table'] . '.')
+                                             ->replace('-', ' ')
+                                             ->ucfirst()
+                                            ->explode('.')
+                                            ->implode(' ');
+                                    @endphp
                                     <x-splade-checkbox
-                                        label="{{ucfirst(\Illuminate\Support\Str::replace('.', ' ', \Illuminate\Support\Str::remove($permission['table'].'.', \Illuminate\Support\Str::remove('admin.', $permission['name']))))}}"
+                                        label="{{$name}}"
                                         name="permissions[]"
                                         value="{{$permission['name']}}"
                                     />
@@ -74,7 +83,7 @@
 
         </x-splade-data>
 
-        <div class="flex justify-start gap-2 pt-3">
+        <div class="flex justify-start gap-2">
             <x-tomato-admin-submit  label="{{__('Save')}}" :spinner="true" />
             <x-tomato-admin-button danger :href="route('admin.roles.destroy', $model->id)"
                                    confirm="{{trans('tomato-admin::global.crud.delete-confirm')}}"
