@@ -58,6 +58,10 @@ class UserController extends Controller
      */
     public function store(UserStoreRequest $request): RedirectResponse
     {
+        $request->merge([
+            "password" => bcrypt($request->get('password'))
+        ]);
+
         $response = Tomato::store(
             request: $request,
             model: \App\Models\User::class,
