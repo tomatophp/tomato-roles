@@ -23,8 +23,6 @@ class UserStoreRequest extends FormRequest
      */
     public function rules()
     {
-        $this->password = bcrypt($this->password);
-
         return [
             'name' => 'required|max:255|string',
             'email' => 'required|max:255|string|email|unique:users,email',
