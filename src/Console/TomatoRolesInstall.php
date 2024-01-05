@@ -2,7 +2,9 @@
 
 namespace TomatoPHP\TomatoRoles\Console;
 
+use App\Models\User;
 use Illuminate\Console\Command;
+use Spatie\Permission\Models\Role;
 use TomatoPHP\ConsoleHelpers\Traits\HandleFiles;
 use TomatoPHP\ConsoleHelpers\Traits\RunCommand;
 use TomatoPHP\TomatoPHP\Services\Generator\CRUDGenerator;
@@ -45,6 +47,21 @@ class TomatoRolesInstall extends Command
         $this->callSilent('optimize:clear');
         $this->callSilent('migrate');
         $this->yarnCommand(['build']);
+        $mainAccount = User::where('email', 'admin@admin.com')->first();
+        if(!$mainAccount){
+            $mainAccount = User::create([
+                'name' => 'Admin',
+                'email' => 'admin@admin.com',
+                'password' => bcrypt('password')
+            ]);
+
+            $role = Role::where('name', 'admin')->first();
+            $mainAccount->roles()->attach([$role->id]);
+        }
+        else {
+            $role = Role::where('name', 'admin')->first();
+            $mainAccount->roles()->attach([$role->id]);
+        }
         $this->info('🍅 Try to login /admin/login with user "admin@admin.com" and password "password"');
         $this->info('🍅 Tomato Roles installed successfully.');
     }
