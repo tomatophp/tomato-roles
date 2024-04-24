@@ -56,11 +56,11 @@ class TomatoRolesInstall extends Command
             ]);
 
             $role = Role::where('name', 'admin')->first();
-            $mainAccount->roles()->attach([$role->id]);
+            $mainAccount->roles()->sync([$role->id]);
         }
         else {
             $role = Role::where('name', 'admin')->first();
-            $mainAccount->roles()->attach([$role->id]);
+            $mainAccount->roles()->sync([$role->id]);
         }
         $this->info('🍅 Try to login /admin/login with user "admin@admin.com" and password "password"');
         $this->info('🍅 Tomato Roles installed successfully.');
