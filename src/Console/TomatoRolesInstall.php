@@ -3,6 +3,7 @@
 namespace TomatoPHP\TomatoRoles\Console;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Spatie\Permission\Models\Role;
 use TomatoPHP\ConsoleHelpers\Traits\HandleFiles;
@@ -50,9 +51,10 @@ class TomatoRolesInstall extends Command
         $mainAccount = User::where('email', 'admin@admin.com')->first();
         if(!$mainAccount){
             $mainAccount = User::create([
-                'name' => 'Admin',
+                'name' => 'TomatoPHP',
                 'email' => 'admin@admin.com',
-                'password' => bcrypt('password')
+                'password' => bcrypt('password'),
+                "email_verified_at" => Carbon::now(),
             ]);
 
             $role = Role::where('name', 'admin')->first();
