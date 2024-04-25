@@ -23,11 +23,11 @@
                         <x-tomato-admin-button warning type="icon" title="{{trans('tomato-admin::global.crud.edit')}}" modal :href="route('admin.users.edit', $item->id)">
                             <x-heroicon-s-pencil class="h-6 w-6"/>
                         </x-tomato-admin-button>
-                        <x-tomato-admin-button danger type="icon" title="{{trans('tomato-admin::global.crud.delete')}}" :href="route('admin.users.destroy', $item->id)"
-                                               confirm="{{trans('tomato-admin::global.crud.delete-confirm')}}"
-                                               confirm-text="{{trans('tomato-admin::global.crud.delete-confirm-text')}}"
-                                               confirm-button="{{trans('tomato-admin::global.crud.delete-confirm-button')}}"
-                                               cancel-button="{{trans('tomato-admin::global.crud.delete-confirm-cancel-button')}}"
+                        <x-tomato-admin-button danger confirm-danger type="icon" title="{{__('Delete User')}}" :href="route('admin.users.destroy', $item->id)"
+                                               confirm="{{__('Delete User!')}}"
+                                               confirm-text="{{__('Are you sure you want to delete this user?, this action cannot be undone.')}}"
+                                               confirm-button="{{__('Delete')}}"
+                                               cancel-button="{{__('Cancel')}}"
                                                method="delete"
                         >
                             <x-heroicon-s-trash class="h-6 w-6"/>
