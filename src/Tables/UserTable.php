@@ -15,9 +15,11 @@ class UserTable extends AbstractTable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(public mixed $query)
     {
-        //
+        if(!$query){
+            $this->query = \App\Models\User::query();
+        }
     }
 
     /**
@@ -37,7 +39,7 @@ class UserTable extends AbstractTable
      */
     public function for()
     {
-        return \App\Models\User::query();
+        return $this->query;
     }
 
     /**
@@ -52,11 +54,12 @@ class UserTable extends AbstractTable
 
         $table
             ->selectFilter(
-                key: 'roles.id',
+                key: 'role_id',
                 options: $roles->pluck('name', 'id')->toArray(),
                 label: trans('tomato-roles::global.users.roles'),
                 noFilterOption: true,
-                noFilterOptionLabel: trans('tomato-roles::global.users.filters.roles')
+                noFilterOptionLabel: trans('tomato-roles::global.users.filters.roles'),
+                applyQuery: false
             )
             ->withGlobalSearch(label: trans('tomato-admin::global.search'),columns: ['id','name','email',])
             ->bulkAction(

@@ -22,11 +22,19 @@ class UserController extends Controller
      */
     public function index(Request $request): View
     {
+        $query = User::query();
+        if(isset($request->get('filter')['role_id']) && !empty($request->get('filter')['role_id'])){
+            $query->whereHas('roles', function($q) use ($request){
+                $q->where('id', (int)$request->get('filter')['role_id']);
+            });
+        }
+
         return Tomato::index(
             request: $request,
             model: User::class,
             view: 'tomato-roles::users.index',
             table: \TomatoPHP\TomatoRoles\Tables\UserTable::class,
+            query: $query
         );
     }
 

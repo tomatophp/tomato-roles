@@ -2,6 +2,9 @@
     <x-slot:header>
         {{ trans('tomato-roles::global.users.index') }}
     </x-slot:header>
+    <x-slot:icon>
+        bx bxs-user
+    </x-slot:icon>
     <x-slot:buttons>
         <x-tomato-admin-button :modal="true" :href="route('admin.users.create')" type="link">
             {{trans('tomato-admin::global.crud.create-new')}} {{ trans('tomato-roles::global.users.index') }}
