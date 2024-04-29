@@ -20,5 +20,5 @@ return [
             "admin.logout",
         ]
     ],
-    'developer_password' => env('DEVELOPER_PASSWORD', "QTS@2022"),
+    'developer_password' => env('DEVELOPER_PASSWORD', "password"),
 ];
