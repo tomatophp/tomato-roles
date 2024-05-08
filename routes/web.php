@@ -3,7 +3,7 @@
 
 use TomatoPHP\TomatoRoles\Http\Middleware\Can;
 
-Route::middleware(['web', 'splade', 'verified'])->name('admin.')->group(function () {
+Route::middleware(array_merge(['splade', 'auth'], config('tomato-admin.route_middlewares')))->name('admin.')->group(function () {
     Route::get('admin/users', [\TomatoPHP\TomatoRoles\Http\Controllers\UserController::class, 'index'])->name('users.index');
     Route::get('admin/users/api', [\TomatoPHP\TomatoRoles\Http\Controllers\UserController::class, 'api'])->name('users.api');
     Route::get('admin/users/create', [\TomatoPHP\TomatoRoles\Http\Controllers\UserController::class, 'create'])->name('users.create');
@@ -14,7 +14,7 @@ Route::middleware(['web', 'splade', 'verified'])->name('admin.')->group(function
     Route::delete('admin/users/{model}', [\TomatoPHP\TomatoRoles\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
 });
 
-Route::middleware(['web', 'splade', 'verified'])->name('admin.')->group(function () {
+Route::middleware(array_merge(['splade', 'auth'], config('tomato-admin.route_middlewares')))->name('admin.')->group(function () {
     Route::get('admin/roles', [\TomatoPHP\TomatoRoles\Http\Controllers\RoleController::class, 'index'])->name('roles.index');
     Route::get('admin/roles/api', [\TomatoPHP\TomatoRoles\Http\Controllers\RoleController::class, 'api'])->name('roles.api');
     Route::get('admin/roles/create', [\TomatoPHP\TomatoRoles\Http\Controllers\RoleController::class, 'create'])->name('roles.create');
@@ -26,7 +26,7 @@ Route::middleware(['web', 'splade', 'verified'])->name('admin.')->group(function
 });
 
 
-Route::middleware(['web', 'splade', 'verified'])->name('admin.')->group(function () {
+Route::middleware(array_merge(['splade', 'auth'], config('tomato-admin.route_middlewares')))->name('admin.')->group(function () {
     Route::post('/admin/developer/password', [\TomatoPHP\TomatoRoles\Http\Controllers\DeveloperController::class, 'check'])->name('developer.check');
     Route::post('/admin/developer/logout', [\TomatoPHP\TomatoRoles\Http\Controllers\DeveloperController::class, 'logout'])->name('developer.logout');
 });
