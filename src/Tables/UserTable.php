@@ -17,7 +17,7 @@ class UserTable extends AbstractTable
      */
     public function __construct(public mixed $query)
     {
-        if(!$query){
+        if (!$query) {
             $this->query = \App\Models\User::query();
         }
     }
@@ -58,13 +58,12 @@ class UserTable extends AbstractTable
                 options: $roles->pluck('name', 'id')->toArray(),
                 label: trans('tomato-roles::global.users.roles'),
                 noFilterOption: true,
-                noFilterOptionLabel: trans('tomato-roles::global.users.filters.roles'),
-                applyQuery: false
+                noFilterOptionLabel: trans('tomato-roles::global.users.filters.roles')
             )
-            ->withGlobalSearch(label: trans('tomato-admin::global.search'),columns: ['id','name','email',])
+            ->withGlobalSearch(label: trans('tomato-admin::global.search'), columns: ['id', 'name', 'email',])
             ->bulkAction(
                 label: trans('tomato-admin::global.crud.delete'),
-                each: function (\App\Models\User $model){
+                each: function (\App\Models\User $model) {
                     $model->roles()->sync([]);
                     $model->delete();
                 },
@@ -73,11 +72,11 @@ class UserTable extends AbstractTable
             )
             ->export()
             ->defaultSort('id')
-            ->column(key: "id",label: trans('tomato-roles::global.users.id'), sortable: true)
-            ->column(key: "name",label: trans('tomato-roles::global.users.name'), sortable: true)
-            ->column(key: "email",label: trans('tomato-roles::global.users.email'), sortable: true)
+            ->column(key: "id", label: trans('tomato-roles::global.users.id'), sortable: true)
+            ->column(key: "name", label: trans('tomato-roles::global.users.name'), sortable: true)
+            ->column(key: "email", label: trans('tomato-roles::global.users.email'), sortable: true)
             ->column(key: 'roles.name', label: trans('tomato-roles::global.users.roles'), sortable: true)
-            ->column(key: "actions",label:  trans('tomato-roles::global.users.actions'))
+            ->column(key: "actions", label: trans('tomato-roles::global.users.actions'))
             ->paginate(15);
     }
 }
